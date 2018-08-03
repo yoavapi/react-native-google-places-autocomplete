@@ -392,7 +392,15 @@ export default class GooglePlacesAutocomplete extends Component {
         }
 
         if (request.status === 200) {
-          const responseJSON = JSON.parse(request.responseText);
+        
+          let responseJSON;
+          try {
+            responseJSON = JSON.parse(request.responseText);
+          } catch (error) {
+            console.log("query:", encodeURIComponent(text) + '&' + Qs.stringify(this.props.query));
+            console.warn("unable to parse:", request.responseText);
+            return;
+          }
 
           this._disableRowLoaders();
 
